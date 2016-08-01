@@ -1,3 +1,5 @@
+# This project is not supported anymore. If you need to make modifications, please fork and maintain your own branch.
+
 # Zabbix-Slack AlertScript
 
 ## About
