@@ -1,14 +1,14 @@
-# This project is not supported anymore. If you need to make modifications, please fork and maintain your own branch.
-
 # Zabbix-Slack AlertScript
 
 ## About
 
-This script will push events from [Zabbix](http://www.zabbix.com/) and display them in [Slack](https://slack.com/). This is an updated version of [ericoc's](https://github.com/ericoc) [zabbix-slack-alertscript](https://github.com/ericoc/zabbix-slack-alertscript). It is written in python and tested on Zabbix 2.4 and CentOS 7.1.
+This script will push events from [Zabbix](http://www.zabbix.com/) and display them in [Slack](https://slack.com/). This is an updated version of 
+[ssplat's](https://github.com/DaiTengu) which is in turn an updated version of [ericoc's](https://github.com/ericoc) 
+[zabbix-slack-alertscript](https://github.com/ericoc/zabbix-slack-alertscript). It is written in python and tested on Zabbix 3.2 and CentOS 7.2.
 
 ---
 
-![slack](https://raw.githubusercontent.com/ssplatt/zabbix-slack-alertscript/master/web_assets/slack_ss.png)
+![slack](https://raw.githubusercontent.com/DaiTengu/zabbix-slack-alertscript/master/web_assets/slack_ss.png)
 
 ---
 
@@ -18,58 +18,62 @@ This script will push events from [Zabbix](http://www.zabbix.com/) and display t
 
 Log in to your Slack account and create a new incoming webhook: https://my.slack.com/services/new/incoming-webhook
 
-1. Copy the Webhook Url. You will need to paste this into the slack_zabbix.py script later
+1. Copy the Webhook Url. You will need to enter this into Zabbix later.
 2. Set the Channel where you'd like the alerts to go (i.e. #alerts)
 3. Set the bot username you'd like to use (i.e. Zabbix-bot)
 4. Upload an icon for the service
-	* i.e. https://raw.githubusercontent.com/ssplatt/zabbix-slack-alertscript/master/web_assets/zabbix_logo.png
+	* i.e. https://raw.githubusercontent.com/DaiTengu/zabbix-slack-alertscript/master/web_assets/zabbix_logo.png
 
 example config:
 
-![slack_config](https://raw.githubusercontent.com/ssplatt/zabbix-slack-alertscript/master/web_assets/slack_webhook_setup.png)
+![slack_config](https://raw.githubusercontent.com/DaiTengu/zabbix-slack-alertscript/master/web_assets/slack_webhook_setup.png)
 
 ### Zabbix
 #### Install the script
 Log into the command line and place `slack_zabbix.py` in the alertscripts folder, i.e. `/usr/lib/zabbix/alertscripts`
 ```
 # cd /usr/lib/zabbix/alertscripts
-# wget https://raw.githubusercontent.com/ssplatt/zabbix-slack-alertscript/master/slack_zabbix.py
+# wget https://raw.githubusercontent.com/DaiTengu/zabbix-slack-alertscript/master/slack_zabbix.py
 # chmod 755 slack_zabbix.py
 ```
 
-Edit `slack_zabbix.py` and copy the Slack Webhook URL into `hookurl = ""`
-```
-# vi slack_zabbix.py
+You may need to install extra python modules, you can do this with pip. 
 
-hookurl = "https://hooks.slack.com/services/ABC123/DEF456/ABCDEF123456"
-```
-
-You may need to install extra python modules.
+CentOS:
 ```
 # yum install python-pip
 # pip install httplib2 json sys
 ```
+
+Debian/Ubuntu:
+```
+# apt-get install python-pip
+# pip install httplib2 json sys
+```
+
 #### Configure Zabbix
 ##### Media Type Configuration
 In the WebUI, create a new Media Type for Slack. You can either clone an existing media type or click `Create Media Type`.
 
-![zabbix_admin_media](https://raw.githubusercontent.com/ssplatt/zabbix-slack-alertscript/master/web_assets/zabbix_admin_mediatypes.png)
+![zabbix_admin_media](https://raw.githubusercontent.com/DaiTengu/zabbix-slack-alertscript/master/web_assets/zabbix_admin_mediatypes.png)
 
 Set the name to `Slack`, type to `Script`, Script Name to `slack_zabbix.py`, and mark it enabled.
 
-![zabbix_admin_media_config](https://raw.githubusercontent.com/ssplatt/zabbix-slack-alertscript/master/web_assets/zabbix_media_config.png)
+
+![zabbix_admin_media_config](https://raw.githubusercontent.com/DaiTengu/zabbix-slack-alertscript/master/web_assets/zabbix_media_config.png)
+
 
 ##### User configuration
 Configure users to have the Slack media type. I chose to modify the default admin user to only have the Slack media type.
 
-![zabbix users config](https://raw.githubusercontent.com/ssplatt/zabbix-slack-alertscript/master/web_assets/zabbix_user_admin.png)
+![zabbix users config](https://raw.githubusercontent.com/DaiTengu/zabbix-slack-alertscript/master/web_assets/zabbix_user_admin.png)
 
-![zabbix users media config](https://raw.githubusercontent.com/ssplatt/zabbix-slack-alertscript/master/web_assets/zabbix_user_media.png)
+![zabbix users media config](https://raw.githubusercontent.com/DaiTengu/zabbix-slack-alertscript/master/web_assets/zabbix_user_media.png)
 
 ##### Action configuration
 Create a new action to send the alerts. You can clone an existing action or click `Create Action`.
 
-![zabbix trigger actions](https://raw.githubusercontent.com/ssplatt/zabbix-slack-alertscript/master/web_assets/zabbix_config_actions.png)
+![zabbix trigger actions](https://raw.githubusercontent.com/DaiTengu/zabbix-slack-alertscript/master/web_assets/zabbix_config_actions.png)
 
 Configure the action. Set the name to anything you'd like. The subject should just be `{TRIGGER.STATUS}` which will be substituted by `PROBLEM` or `OK`. For the Message, set something like:
 ```
@@ -77,11 +81,11 @@ Configure the action. Set the name to anything you'd like. The subject should ju
 ```
 ' :: ' is used as a delimiter but also keeps the string readable in case the fallback text is used instead of the fully formatted version. If you want to change the delimiter, you'll need to update `slack_zabbix.py` to match. If you change the order of the macros, you'll also need to update `slack_zabbix.py`, as well.
 
-![zabbix action config](https://raw.githubusercontent.com/ssplatt/zabbix-slack-alertscript/master/web_assets/zabbix_action.png)
+![zabbix action config](https://raw.githubusercontent.com/DaiTengu/zabbix-slack-alertscript/master/web_assets/zabbix_action.png)
 
 Configure the Operations tab to send a message to a single user or a group.
 
-![zabbix action operations](https://raw.githubusercontent.com/ssplatt/zabbix-slack-alertscript/master/web_assets/zabbix_operations.png)
+![zabbix action operations](https://raw.githubusercontent.com/DaiTengu/zabbix-slack-alertscript/master/web_assets/zabbix_operations.png)
 
 ## Testing
 
