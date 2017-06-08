@@ -66,13 +66,13 @@ In the WebUI, create a new Media Type for Slack. You can either clone an existin
 
 Set the name to `Slack`, type to `Script`, Script Name to `slack_zabbix.py`, and mark it enabled. 
 Under `Script parameters` click `Add` **7** times, and fill in the following:
-[1]: {ALERT.SENDTO}
-[2]: {ALERT.SUBJECT}
-[3]: {ALERT.MESSAGE}
-[4]: *https://my.website.com/zabbix* - The URL to your zabbix front-end
-[5]: *Zabbix* - The Username you want to send notifications as (can be anything)
-[6]: https://hooks.slack.com/services/ABC123/ABC123/ABCDEF123456 - the Slack hook URL you saved earlier
-[7]: https://my.website.com/zabbix/img/zabbix-icon.png - URL to an icon that will be displayed next to the slack username in notifications.
+1. {ALERT.SENDTO}
+2. {ALERT.SUBJECT}
+3. {ALERT.MESSAGE}
+4. *https://my.website.com/zabbix* - The URL to your zabbix front-end
+5. *Zabbix* - The Username you want to send notifications as (can be anything)
+6. https://hooks.slack.com/services/ABC123/ABC123/ABCDEF123456 - the Slack hook URL you saved earlier
+7. https://my.website.com/zabbix/img/zabbix-icon.png - URL to an icon that will be displayed next to the slack username in notifications.
 
 ![zabbix_admin_media_config](https://raw.githubusercontent.com/DaiTengu/zabbix-slack-alertscript/master/web_assets/zabbix_media_config.png)
 
